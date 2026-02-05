@@ -25,57 +25,25 @@ export class OrdersPage implements OnInit {
   selectedOrder$ = new BehaviorSubject<Order | null>(null);
 
   constructor(private ordersService: OrdersService) {
-    console.log(this.ordersService)
-
-    // 1️⃣ Base orders stream (from service)
-        // this.orders$ = this.ordersService.orders$;
-
-
-    // 2️⃣ Only completed orders
-    // this.completedOrders$ = this.orders$.pipe(
-    //   map(orders => orders.filter(o => o.status === 'completed')),
-    //    shareReplay(1)
-    //   );
-
-//      this.filteredOrders$ = this.orders$.pipe(
-//   map(orders => orders) // initially full list
-// );
-
-    // this.filteredOrders$ = combineLatest([
-    //   this.completedOrders$,
-    //   this.filters$
-    // ]).pipe(
-    //   map(([orders, filters]) =>
-    //     filters ? this.applyFilters(orders, filters) : orders
-    //   ),
-    //   take(1), // 🔥 THIS LINE FIXES SSR
-    //   shareReplay(1)
-    // );
   }
 
   ngOnInit() {
-            this.orders$ = this.ordersService.orders$;
+    this.orders$ = this.ordersService.orders$;
 
-    firstValueFrom(this.orders$).then(data => {
-    console.log('CONFIRMED orders:', data);
-  });
-    // this.filteredOrders$ = this.orders$.pipe(
-    //   map(orders => orders) // no filter initially → full list
-    // );
-      // this.filteredOrders$ = this.orders$;
-          this.completedOrders$ = this.orders$.pipe(
+    //   firstValueFrom(this.orders$).then(data => {
+    //   console.log('CONFIRMED orders:', data);
+    // });
+    
+    this.completedOrders$ = this.orders$.pipe(
       map(orders => orders.filter(o => o.status === 'completed')),
        shareReplay(1)
-      );
+    );
 
-      this.filteredOrders$ = combineLatest([
-      this.completedOrders$,
-      this.filters$
-    ]).pipe(
+    this.filteredOrders$ = combineLatest([this.completedOrders$,this.filters$]).pipe(
       map(([orders, filters]) =>
         filters ? this.applyFilters(orders, filters) : orders
       ),
-      take(1), // 🔥 THIS LINE FIXES SSR
+      take(1), 
       shareReplay(1)
     );
       
@@ -84,18 +52,9 @@ export class OrdersPage implements OnInit {
   /** Called by filters component */
   updateFilters(filters: any) {
     this.filters$.next(filters);
-this.filteredOrders$ = this.orders$.pipe(
-  map(orders => this.applyFilters(orders, filters))
-);    //     combineLatest([
-    //   this.completedOrders$,
-    //   this.filters$
-    // ]).pipe(
-    //   map(([orders, filters]) =>
-    //     filters ? this.applyFilters(orders, filters) : orders
-    //   ),
-    //   take(1), // 🔥 THIS LINE FIXES SSR
-    //   shareReplay(1)
-    // );
+    this.filteredOrders$ = this.orders$.pipe(
+      map(orders => this.applyFilters(orders, filters))
+    );    
   }
 
   /** Called when an order is selected */
@@ -105,7 +64,6 @@ this.filteredOrders$ = this.orders$.pipe(
 
   /** Pure filter function */
   private applyFilters(orders: Order[], filters: any): Order[] {
-    debugger ;
     return orders.filter(o =>
       (!filters.search || o.id.includes(filters.search)) &&
       (!filters.payment || o.paymentMethod === filters.payment) &&

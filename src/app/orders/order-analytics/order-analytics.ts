@@ -17,7 +17,6 @@ export class OrderAnalytics {
   @Input()
   set orders(orders$: Observable<Order[]> | null | undefined) {
 
-    // 🛡️ Guard against undefined input
     if (!orders$) return;
 
     this.dailyRevenue$ = orders$.pipe(
@@ -37,7 +36,7 @@ export class OrderAnalytics {
           .map(([date, total]) => ({ date, total }))
           .sort((a, b) => b.total - a.total);
       }),
-      shareReplay({ bufferSize: 1, refCount: true }) // ⚡ performance
+      shareReplay({ bufferSize: 1, refCount: true }) 
     );
   }
 }
