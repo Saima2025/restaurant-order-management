@@ -32,7 +32,7 @@ export class OrdersService {
     return sum + item.quantity * item.unitPrice;
   }, 0);
 
-    return {
+    return { // Returns an Order object in app’s internal format.
       id: api.orderId,
       date: api.orderDate,
       paymentMethod: api.paymentMethod.toLowerCase(),

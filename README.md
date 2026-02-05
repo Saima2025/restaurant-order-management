@@ -1,59 +1,60 @@
-# RestaurantManagerDashboard
+order-analytics :
+Accepts an observable of Order[] as input.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+Filters only completed orders.
 
-## Development server
+Groups revenue by date.
 
-To start a local development server, run:
+Sorts the dates by revenue descending.
 
-```bash
-ng serve
-```
+Exposes an observable dailyRevenue$ for the template to consume using async.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+order-details :
+Accepts a single order object.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Shows a message if no order is selected.
 
-```bash
-ng generate component component-name
-```
+If an order is selected, displays a table of items with their quantities, prices, and totals.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+orders-filters :
+Uses Reactive Forms (FormBuilder + FormGroup).
 
-## Building
+Emits filter changes via an @Output() EventEmitter called filtersChange.
 
-To build the project run:
+Debounces input changes by 300ms to avoid emitting too frequently (debounceTime(300)).
 
-```bash
-ng build
-```
+Exposes form controls: search, from, to, payment, status.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+orders-list:
+Accepts an array of Order objects via @Input().
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Emits selected orders via @Output().
 
-```bash
-ng test
-```
+Implements pagination (next/previous page, subset of orders).
 
-## Running end-to-end tests
+Tracks items by id for performance.
 
-For end-to-end (e2e) testing, run:
+Reacts to changes in the orders array.
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+order-page: 
+Fetches all orders from OrdersService.
 
-## Additional Resources
+Maintains completed orders stream.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Maintains filtered orders based on user-applied filters.
+
+Tracks selected order for showing details.
+
+
+orders.service:
+Provides a reactive stream of orders (orders$) to the rest of the app.
+
+Fetches data from a local JSON file (assets/mockdata.json).
+
+Maps raw API order objects to your internal Order model, including calculating totals.
+
+Uses shareReplay to cache the result for multiple subscribers, preventing multiple HTTP requests.

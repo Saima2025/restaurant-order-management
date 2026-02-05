@@ -1,18 +1,32 @@
-<div class="p-4">
-  <h2 class="font-semibold mb-4">Order Details</h2>
+<div class="p-4 bg-white rounded-xl shadow border border-gray-200">
+  <h2 class="text-lg font-semibold mb-4 text-gray-800">Order Details</h2>
 
-  <p *ngIf="!order" class="text-gray-500">
+  <!-- No order selected -->
+  <p *ngIf="!order" class="text-gray-500 italic">
     Select an order
   </p>
 
-  <table *ngIf="order" class="w-full text-sm">
-    <tr *ngFor="let item of order.items">
-      <td>{{ item.name }}</td>
-      <td class="text-right">{{ item.quantity }}</td>
-      <td class="text-right">{{ item.unitPrice | currency }}</td>
-      <td class="text-right">
-        {{ item.quantity * item.unitPrice | currency }}
-      </td>
-    </tr>
-  </table>
+  <!-- Order items table -->
+  <div *ngIf="order" class="overflow-x-auto">
+    <table class="w-full text-sm text-left min-w-[400px]">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+        <tr>
+          <th class="px-4 py-2 font-medium">Item</th>
+          <th class="px-4 py-2 font-medium text-right">Quantity</th>
+          <th class="px-4 py-2 font-medium text-right">Unit Price</th>
+          <th class="px-4 py-2 font-medium text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let item of order.items">
+          <td class="px-4 py-2">{{ item.name }}</td>
+          <td class="px-4 py-2 text-right">{{ item.quantity }}</td>
+          <td class="px-4 py-2 text-right">{{ item.unitPrice | currency }}</td>
+          <td class="px-4 py-2 text-right font-semibold">
+            {{ item.quantity * item.unitPrice | currency }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

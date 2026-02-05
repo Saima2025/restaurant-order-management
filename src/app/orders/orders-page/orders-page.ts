@@ -34,17 +34,17 @@ export class OrdersPage implements OnInit {
     //   console.log('CONFIRMED orders:', data);
     // });
     
-    this.completedOrders$ = this.orders$.pipe(
+    this.completedOrders$ = this.orders$.pipe( // Filters orders$ to only include orders with status === 'completed'.
       map(orders => orders.filter(o => o.status === 'completed')),
        shareReplay(1)
     );
 
-    this.filteredOrders$ = combineLatest([this.completedOrders$,this.filters$]).pipe(
+    this.filteredOrders$ = combineLatest([this.completedOrders$,this.filters$]).pipe( //Combines the completed orders and current filters. 
       map(([orders, filters]) =>
-        filters ? this.applyFilters(orders, filters) : orders
+        filters ? this.applyFilters(orders, filters) : orders // If filters exist, applies them via applyFilters; otherwise returns all completed orders.
       ),
-      take(1), 
-      shareReplay(1)
+      take(1), // completes after first emissio
+      shareReplay(1) // caches the result.
     );
       
   }
