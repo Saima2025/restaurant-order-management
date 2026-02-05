@@ -1,0 +1,20 @@
+<div [formGroup]="form" class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-white p-4 rounded shadow">
+  <input class="input" placeholder="Order ID" formControlName="search" />
+  <input class="input" type="date" formControlName="from" />
+  <input class="input" type="date" formControlName="to" />
+
+  <select class="input" formControlName="payment">
+    <option value="">All Payments</option>
+    <option value="cash">Cash</option>
+    <option value="card">Card</option>
+    <option value="online">Online</option>
+  </select>
+
+  <select class="input" formControlName="status">
+    <option value="">All Status</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+    <option value="pending">Pending</option>
+    <option value="refunded">Refunded</option>
+  </select>
+</div>

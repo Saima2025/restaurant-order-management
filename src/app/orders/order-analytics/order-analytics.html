@@ -1,0 +1,15 @@
+<table class="w-full border">
+  <thead>
+    <tr>
+      <th class="th">Date</th>
+      <th class="th text-right">Revenue</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let row of dailyRevenue$ | async">
+      <td class="td">{{ row.date }}</td>
+      <td class="td text-right">{{ row.total | currency }}</td>
+    </tr>
+  </tbody>
+</table>

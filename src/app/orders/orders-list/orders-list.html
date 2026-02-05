@@ -1,0 +1,51 @@
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center py-4">
+  Loading orders...
+</div>
+
+<!-- Empty State -->
+<div *ngIf="!loading && orders.length === 0" class="text-center py-4 text-gray-500">
+  No orders found.
+</div>
+
+<!-- Orders Table -->
+<table *ngIf="!loading && orders.length > 0" class="w-full text-sm">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="th">ID</th>
+      <th class="th">Date</th>
+      <th class="th">Status</th>
+      <th class="th">Payment</th>
+      <th class="th text-right">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of pagedOrders; trackBy: trackById"
+        (click)="selectOrder.emit(order)"
+        class="hover:bg-gray-50 cursor-pointer">
+      <td class="td">{{ order.id }}</td>
+      <td class="td">{{ order.date | date:'yyyy-MM-dd' }}</td>
+      <td class="td">{{ order.status }}</td>
+      <td class="td">{{ order.paymentMethod }}</td>
+      <td class="td text-right">{{ order.total | currency }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- Pagination Controls -->
+<div *ngIf="!loading && orders.length > pageSize" class="flex justify-between items-center mt-2">
+  <button (click)="prevPage()"
+          [disabled]="currentPage === 1"
+          class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+    Previous
+  </button>
+
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+  <button (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+    Next
+  </button>
+</div>

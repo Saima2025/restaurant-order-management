@@ -1,0 +1,34 @@
+<div class="min-h-screen bg-gray-50 p-6 space-y-6">
+
+  <h1 class="text-2xl font-semibold">Orders Dashboard</h1>
+
+  <app-orders-filters
+    (filtersChange)="updateFilters($event)">
+  </app-orders-filters>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <div class="xl:col-span-2 bg-white rounded shadow">
+      <app-orders-list
+        *ngIf="filteredOrders$ | async as orders"
+        [orders]="orders"
+        (selectOrder)="selectOrder($event)">
+      </app-orders-list>
+    </div>
+
+    <div class="bg-white rounded shadow">
+      <app-order-details
+        [order]="selectedOrder$ | async">
+      </app-order-details>
+    </div>
+
+  </div>
+
+
+  <div class="bg-white rounded shadow">
+    <app-order-analytics
+  [orders]="filteredOrders$">
+</app-order-analytics>
+  </div>
+
+</div>
