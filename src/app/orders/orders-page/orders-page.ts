@@ -43,7 +43,7 @@ export class OrdersPage implements OnInit {
       map(([orders, filters]) =>
         filters ? this.applyFilters(orders, filters) : orders // If filters exist, applies them via applyFilters; otherwise returns all completed orders.
       ),
-      take(1), // completes after first emissio
+      take(1), // completes after first emission
       shareReplay(1) // caches the result.
     );
       

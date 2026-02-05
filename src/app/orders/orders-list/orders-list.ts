@@ -20,7 +20,7 @@ export class OrdersList implements OnInit {
   // Loading state
   loading = false;
 
-  trackById = (_: number, o: Order) => o.id;
+  trackById = (_: number, o: Order) => o.id;// Optimizes *ngFor rendering.
 
   ngOnInit() {
     this.updatePagedOrders();
@@ -34,7 +34,7 @@ export class OrdersList implements OnInit {
   updatePagedOrders() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedOrders = this.orders.slice(start, end);
+    this.pagedOrders = this.orders.slice(start, end);// subset of order of the page
   }
 
   // Pagination controls
